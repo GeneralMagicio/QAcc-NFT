@@ -12,7 +12,9 @@ contract QAccProjectNFTScript is Script {
     function run() public {
         vm.startBroadcast();
 
-        nft = new QAccProjectNFT("QAccProjectNFT", "QAPNFT");
+        address deployer = tx.origin;
+
+        nft = new QAccProjectNFT("QAccProjectNFT", "QAPNFT", deployer, "BaseURI");
 
         vm.stopBroadcast();
     }
