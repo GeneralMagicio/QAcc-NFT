@@ -38,4 +38,10 @@ contract QAccProjectNFT is ERC721, Ownable {
     function _baseURI() internal view override returns (string memory) {
         return _baseTokenURI;
     }
+
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        _requireOwned(tokenId);
+
+        return _baseURI();
+    }
 }
