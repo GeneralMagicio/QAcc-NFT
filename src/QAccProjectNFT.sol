@@ -17,9 +17,14 @@ contract QAccProjectNFT is ERC721, Ownable {
         _setBaseURI(baseURI);
     }
 
-    function mint(address to) external onlyOwner {
-        _safeMint(to, _nextTokenId);
-        _nextTokenId++;
+    function mint(address account) external onlyOwner {
+        _mint(account);
+    }
+
+    function mintMany(address[] memory accounts) external onlyOwner {
+        for (uint256 i = 0; i < accounts.length; i++) {
+            _mint(accounts[i]);
+        }
     }
 
     function currentTokenId() external view returns (uint256) {
@@ -31,17 +36,22 @@ contract QAccProjectNFT is ERC721, Ownable {
         _setBaseURI(baseURI);
     }
 
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        _requireOwned(tokenId);
+
+        return _baseURI();
+    }
+
+    function _mint(address to) internal {
+        _safeMint(to, _nextTokenId);
+        _nextTokenId++;
+    }
+
     function _setBaseURI(string memory baseURI) internal {
         _baseTokenURI = baseURI;
     }
 
     function _baseURI() internal view override returns (string memory) {
         return _baseTokenURI;
-    }
-
-    function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        _requireOwned(tokenId);
-
-        return _baseURI();
     }
 }
